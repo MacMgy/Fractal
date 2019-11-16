@@ -5,28 +5,31 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	svg "github.com/swill/svgo"
-	"io"
 	"io/ioutil"
-	"os"
+	"math"
 	"path/filepath"
 	"strings"
+
+	svg "github.com/swill/svgo"
 )
 
+type genTypically struct {
+	Element string `json:"element"`
+	Rule    string `json:"rule"`
+}
+
 type Task struct {
-	Axiom        string `json:"axiom"`
-	GenTypically map[int]struct {
-		element string `json:"element"`
-		rule    string `json:"rule"`
-	} `json:"genTypically"`
-	RotAngle float64 `json:"rotAngle"`
-	Step     int `json:"step"`
-	Depth    int `json:"depth"`
+	Name         string         `json:"name"`
+	Axiom        string         `json:"axiom"`
+	GenTypically []genTypically `json:"genTypically"`
+	RotAngle     float64        `json:"rotAngle"`
+	Step         float64        `json:"step"`
+	Depth        int            `json:"depth"`
 }
 
 type Coordinate struct {
-	x int
-	y int
+	x     float64
+	y     float64
 	angle float64
 }
 
@@ -41,7 +44,7 @@ const (
 	height = 1500
 	width  = 1500
 
-	lineStyle = `stroke="green" stroke-width="2"`
+	lineStyle = `stroke="black" stroke-width="2"`
 )
 
 func readTask(name string) (Task, error) {
@@ -65,50 +68,36 @@ func readTask(name string) (Task, error) {
 	return task, nil
 }
 
-func saveSVG(buf *bytes.Buffer) {
-	name := "snowFlake.svg"
-	path := filepath.Join("image", name)
-	err := ioutil.WriteFile(path, buf.Bytes(), 0777)
-	if err != nil {
-		fmt.Print(err)
-	}
-}
-
 func createTask(task *Task) error {
-	var buf = new(bytes.Buffer)
-
-	err := json.NewEncoder(buf).Encode(task)
+	buf, err := json.Marshal(task)
 	if err != nil {
 		return err
 	}
 
-	name := "snowFlake.json"
-	path := filepath.Join("task", name)
-	f, err := os.Create(path)
-	defer f.Close()
+	path := filepath.Join("task", task.Name+".json")
+	err = ioutil.WriteFile(path, buf, 0777)
 	if err != nil {
 		return err
 	}
 
-	io.Copy(f, buf)
 	return nil
 }
 
 func convertAxiom(task *Task) {
-	for j:= 1; j <= task.Depth; j++ {
-		for i := 1; i <= len(task.GenTypically); i++ {
-			//fmt.Print(task)
-			//fmt.Print("\n")
-			//fmt.Print(task.GenTypically[1].element)
-			//fmt.Print("\n")
-			//fmt.Print(task.GenTypically[i].rule)
-			//fmt.Print("\n")
-			task.Axiom = strings.ReplaceAll(task.Axiom, "F", "F-F++F-F")
-			//fmt.Print("\n")
-			//fmt.Print(task.Axiom)
+	for j := 1; j <= task.Depth; j++ {
+		for i := 0; i < len(task.GenTypically); i++ {
+			task.Axiom = strings.ReplaceAll(task.Axiom, task.GenTypically[i].Element, task.GenTypically[i].Rule)
 		}
 	}
 
+}
+
+func saveSVG(buf *bytes.Buffer, name string) {
+	path := filepath.Join("image", name+".svg")
+	err := ioutil.WriteFile(path, buf.Bytes(), 0777)
+	if err != nil {
+		fmt.Print(err)
+	}
 }
 
 func drawSVG(task *Task) error {
@@ -117,20 +106,21 @@ func drawSVG(task *Task) error {
 	canvas.Start(width, height)
 
 	point := Coordinate{
-		x: width/2,
-		y: height/2,
+		x:     width / 2,
+		y:     height / 2,
 		angle: 0,
 	}
 
 	convertAxiom(task)
+	fmt.Print(task.Axiom)
 	for _, i := range task.Axiom {
 		switch string(i) {
 		case forward:
-			canvas.Rotate(point.angle)
-			canvas.Line(point.x, point.y, point.x+task.Step, point.y+task.Step, lineStyle)
-			canvas.Gend()
-			point.x += task.Step
-			point.y += task.Step
+			x := task.Step * math.Cos(point.angle)
+			y := task.Step * math.Sin(point.angle)
+			canvas.Line(int(point.x), int(point.y), int(point.x+x), int(point.y+y), lineStyle)
+			point.x += x
+			point.y += y
 		case forwardWithoutDrawing:
 			point.x += task.Step
 			point.y += task.Step
@@ -138,39 +128,44 @@ func drawSVG(task *Task) error {
 		case recall:
 		case turnClockwise:
 			point.angle += task.RotAngle
-			//canvas.Rotate(task.RotAngle)
 		case turnCounterClockwise:
-			//canvas.Rotate(-task.RotAngle)
 			point.angle -= task.RotAngle
 		}
 	}
 	canvas.End()
 
-	saveSVG(buf)
+	saveSVG(buf, task.Name)
 	return nil
 }
 
-func generateFileTask(){
+func main() {
+	//generateFileTask()
+	task, _ := readTask("snowFlake.json")
+
+	drawSVG(&task)
+}
+
+func generateFileTask() {
 	var task = Task{
-		Axiom: "F++F++F",
-		GenTypically: map[int]struct {
-			element string `json:"element"`
-			rule    string `json:"rule"`
-		}{1: {"F", "F-F++F-F"},},
-		RotAngle: 60,
-		Step:     5,
-		Depth:    3,
+		Name:         "snowFlake",
+		Axiom:        "F++F++F",
+		GenTypically: []genTypically{0: {"F", "F-F++F-F"}},
+		RotAngle:     60,
+		Step:         700,
+		Depth:        5,
 	}
+
+	//var task = Task{
+	//	Name:         "triangle",
+	//	Axiom:        "FXF--FF--FF",
+	//	GenTypically: []genTypically{0: {"F", "FF"}, 1: {"X", "--FXF++FXF++FXF--"}},
+	//	RotAngle:     60,
+	//	Step:         12,
+	//	Depth:        5,
+	//}
 
 	err := createTask(&task)
 	if err != nil {
 		fmt.Print(err)
 	}
-}
-
-func main() {
-	generateFileTask()
-	task, _ := readTask("snowFlake.json")
-
-	drawSVG(&task)
 }
