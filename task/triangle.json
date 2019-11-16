@@ -7,6 +7,6 @@
     {"element":"X","rule":"--FXF++FXF++FXF--"}
   ],
   "rotAngle":60,
-  "step":12,
-  "depth":5
+  "step":10,
+  "depth":6
 }

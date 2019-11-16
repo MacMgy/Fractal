@@ -41,11 +41,23 @@ const (
 	turnClockwise         = "+"
 	turnCounterClockwise  = "-"
 
+	snowFlake = "snowFlake.json"
+	triangle  = "triangle.json"
+	dragon = "dragon.json"
+	brokenLine = "brokenLine.json"
+
 	height = 1500
 	width  = 1500
 
-	lineStyle = `stroke="black" stroke-width="2"`
+	heightStart = 700
+	widthStart = 1300
+
+	lineStyle = `stroke="yellow" stroke-width="2"`
 )
+
+func getRadian(g float64) float64 {
+	return (g * math.Pi) / 180
+}
 
 func readTask(name string) (Task, error) {
 	path := filepath.Join("task", name)
@@ -106,18 +118,17 @@ func drawSVG(task *Task) error {
 	canvas.Start(width, height)
 
 	point := Coordinate{
-		x:     width / 2,
-		y:     height / 2,
+		x:     widthStart,
+		y:     heightStart,
 		angle: 0,
 	}
 
 	convertAxiom(task)
-	fmt.Print(task.Axiom)
 	for _, i := range task.Axiom {
 		switch string(i) {
 		case forward:
-			x := task.Step * math.Cos(point.angle)
-			y := task.Step * math.Sin(point.angle)
+			x := task.Step * math.Cos(getRadian(point.angle))
+			y := task.Step * math.Sin(getRadian(point.angle))
 			canvas.Line(int(point.x), int(point.y), int(point.x+x), int(point.y+y), lineStyle)
 			point.x += x
 			point.y += y
@@ -139,20 +150,45 @@ func drawSVG(task *Task) error {
 }
 
 func main() {
-	//generateFileTask()
-	task, _ := readTask("snowFlake.json")
+	generateFileTask()
+	task, _ := readTask(brokenLine)
 
-	drawSVG(&task)
+	err := drawSVG(&task)
+	if err != nil {
+		fmt.Print(err)
+	}
 }
 
 func generateFileTask() {
+	//var task = Task{
+	//	Name:         "snowFlake",
+	//	Axiom:        "F++F++F",
+	//	GenTypically: []genTypically{0: {"F", "F-F++F-F"}},
+	//	RotAngle:     60,
+	//	Step:         700,
+	//	Depth:        5,
+	//}
+
+	//var task = Task{
+	//	Name:         "dragon",
+	//	Axiom:        "FX",
+	//	GenTypically: []genTypically{
+	//		0:{"X", "X+YF+"},
+	//		1:{"Y", "-FX-Y"}},
+	//	RotAngle:     90,
+	//	Step:         20,
+	//	Depth:        5,
+	//}
+
 	var task = Task{
-		Name:         "snowFlake",
-		Axiom:        "F++F++F",
-		GenTypically: []genTypically{0: {"F", "F-F++F-F"}},
-		RotAngle:     60,
-		Step:         700,
-		Depth:        5,
+		Name:         "brokenLine",
+		Axiom:        "X",
+		GenTypically: []genTypically{
+			0:{"X", "-YF+XYX+FY-"},
+			1:{"Y", "+XF-YXY-FX+"}},
+		RotAngle:     90,
+		Step:         20,
+		Depth:        3,
 	}
 
 	//var task = Task{
