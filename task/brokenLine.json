@@ -1,1 +1,13 @@
-{"name":"brokenLine","axiom":"X","genTypically":[{"element":"X","rule":"-YF+XFX+FY-"},{"element":"Y","rule":"+XF-YFY-FX+"}],"rotAngle":90,"step":20,"depth":4}
+{
+  "name":"brokenLine",
+  "axiom":"X",
+  "genTypically":[
+    {"element":"X","rule":"-YF+XFX+FY-"},
+    {"element":"Y","rule":"+XF-YFY-FX+"}
+  ],
+  "rotAngle":90,
+  "step":20,
+  "depth":7,
+  "width":20,
+  "height":1480
+}

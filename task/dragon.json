@@ -6,8 +6,8 @@
     {"element":"Y","rule":"-FX-Y"}
   ],
   "rotAngle":90,
-  "step":16,
+  "step":12,
   "depth":14,
-  "width":1200,
-  "height":1000
+  "width":1500,
+  "height":1900
 }
