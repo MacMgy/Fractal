@@ -5,6 +5,8 @@
     {"element":"F","rule":"F-F++F-F"}
   ],
   "rotAngle":60,
-  "step":4,
-  "depth":5
+  "step":15,
+  "depth":4,
+  "width":150,
+  "height":400
 }
