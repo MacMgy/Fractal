@@ -1,1 +1,12 @@
-{"axiom":"F++F++F","genTypically":{"1":{}},"rotAngle":60,"step":5,"depth":3}
+{
+  "name":"snowFlake",
+  "axiom":"F++F++F",
+  "genTypically":[
+    {"element":"F","rule":"F-F++F-F"}
+  ],
+  "rotAngle":60,
+  "step":15,
+  "depth":4,
+  "width":150,
+  "height":400
+}

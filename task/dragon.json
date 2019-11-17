@@ -1,0 +1,13 @@
+{
+  "name":"dragon",
+  "axiom":"FX",
+  "genTypically":[
+    {"element":"X","rule":"X+YF+"},
+    {"element":"Y","rule":"-FX-Y"}
+  ],
+  "rotAngle":90,
+  "step":16,
+  "depth":14,
+  "width":1200,
+  "height":1000
+}

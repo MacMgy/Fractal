@@ -1,0 +1,1 @@
+{"name":"tree_3","axiom":"X","genTypically":[{"element":"F","rule":"FF"},{"element":"","rule":""},{"element":"X","rule":"F[+X][-X]FX"}],"rotAngle":25.7,"step":8,"depth":6}

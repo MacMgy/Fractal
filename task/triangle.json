@@ -1,0 +1,14 @@
+{
+  "name":"triangle",
+  "axiom":"FXF--FF--FF",
+  "genTypically":
+  [
+    {"element":"F","rule":"FF"},
+    {"element":"X","rule":"--FXF++FXF++FXF--"}
+  ],
+  "rotAngle":60,
+  "step":12,
+  "depth":7,
+  "width":120,
+  "height":3100
+}
