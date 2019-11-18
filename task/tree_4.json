@@ -1,1 +1,12 @@
-{"name":"tree_4","axiom":"F","genTypically":[{"element":"F","rule":"-F[-F+F-F]+[+F-F-F]"}],"rotAngle":20,"step":30,"depth":5}
+{
+  "name":"tree_4",
+  "axiom":"F",
+  "genTypically":[
+    {"element":"F","rule":"-F[-F+F-F]+[+F-F-F]"}
+  ],
+  "rotAngle":20,
+  "step":120,
+  "depth":5,
+  "width":1350,
+  "height":2300
+}

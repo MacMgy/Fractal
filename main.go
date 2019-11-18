@@ -50,8 +50,8 @@ const (
 	tree_3 = "tree_3.json"
 	tree_4 = "tree_4.json"
 
-	height = 1500
-	width  = 1500
+	height = 2500
+	width  = 2500
 
 	//heightStart = 500
 	//widthStart = 20
@@ -170,100 +170,9 @@ func drawSVG(task *Task) error {
 }
 
 func main() {
-	//generateFileTask()
-	task, _ := readTask(dragon)
+	task, _ := readTask(tree_4)
 
 	err := drawSVG(&task)
-	if err != nil {
-		fmt.Print(err)
-	}
-}
-
-func generateFileTask() {
-	var task = Task{
-		Name:         "snowFlake",
-		Axiom:        "F++F++F",
-		GenTypically: []genTypically{0: {"F", "F-F++F-F"}},
-		RotAngle:     60,
-		Step:         700,
-		Depth:        5,
-		Width:        300,
-		Height:       500,
-	}
-
-	//var task = Task{
-	//	Name:         "dragon",
-	//	Axiom:        "FX",
-	//	GenTypically: []genTypically{
-	//		0:{"X", "X+YF+"},
-	//		1:{"Y", "-FX-Y"}},
-	//	RotAngle:     90,
-	//	Step:         20,
-	//	Depth:        5,
-	//}
-
-	//var task = Task{
-	//	Name:         "brokenLine",
-	//	Axiom:        "X",
-	//	GenTypically: []genTypically{
-	//		0:{"X", "-YF+XFX+FY-"},
-	//		1:{"Y", "+XF-YFY-FX+"}},
-	//	RotAngle:     90,
-	//	Step:         20,
-	//	Depth:        4,
-	//}
-
-	//var task = Task{
-	//	Name:         "tree_1",
-	//	Axiom:        "F",
-	//	GenTypically: []genTypically{
-	//		0:{"F", "F[+F]F[-F]F"}},
-	//	RotAngle:     25.7,
-	//	Step:         20,
-	//	Depth:        6,
-	//}
-
-	//var task = Task{
-	//	Name:         "tree_2",
-	//	Axiom:        "F",
-	//	GenTypically: []genTypically{
-	//		0:{"F", "F[+F]F[-F][F]"}},
-	//	RotAngle:     20,
-	//	Step:         20,
-	//	Depth:        6,
-	//}
-
-	//var task = Task{
-	//	Name:         "tree_3",
-	//	Axiom:        "X",
-	//	GenTypically: []genTypically{
-	//		0:{"F", "FF"},
-	//		2:{"X", "F[+X][-X]FX"}},
-	//	RotAngle:     25.7,
-	//	Step:         8,
-	//	Depth:        6,
-	//}
-
-	//var task = Task{
-	//	Name:         "tree_4",
-	//	Axiom:        "F",
-	//	GenTypically: []genTypically{
-	//		0:{"F", "-F[-F+F-F]+[+F-F-F]"}},
-	//	RotAngle:     20,
-	//	Step:         30,
-	//	Depth:        5,
-	//}
-
-	//var task = Task{
-	//	Name:         "triangle",
-	//	Axiom:        "FXF--FF--FF",
-	//	GenTypically: []genTypically{0: {"F", "FF"}, 1: {"X", "--FXF++FXF++FXF--"}},
-	//	RotAngle:     60,
-	//	Step:         12,
-	//	Depth:        5,
-	//}
-
-	err := createTask(&task)
 	if err != nil {
 		fmt.Print(err)
 	}
